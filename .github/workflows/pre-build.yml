@@ -1,0 +1,38 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - prebuild
+
+permissions:
+  contents: write
+
+jobs:
+  standard-version:
+    name: Update version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm install --force
+
+      - name: Generate release
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email '<>'
+          npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push changes
+        run: git push --follow-tags origin ${{ github.event.pull_request.head.ref }}
