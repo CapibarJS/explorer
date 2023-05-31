@@ -1,6 +1,13 @@
 # Changelog CapibarJS/Client.
 
 
+### 0.0.3 (2023-05-31)
+
+
+### Chores
+
+* add index.js ([5c293ba](https://github.com/CapibarJS/explorer/commit/5c293ba6f9f0085c74e386f2230a2703bc94f79d))
+
 ### 0.0.2 (2023-05-31)
 
 
