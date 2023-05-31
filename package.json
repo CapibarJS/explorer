@@ -1,0 +1,57 @@
+{
+  "name": "@capibar/explorer",
+  "version": "0.0.2",
+  "description": "",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "release": "standard-version -a",
+    "release:patch": "standard-version -a --release-as patch",
+    "release:minor": "standard-version -a --release-as minor",
+    "release:major": "standard-version -a --release-as major"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CapibarJS/explorer.git"
+  },
+  "author": "CapibarJS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CapibarJS/explorer/issues"
+  },
+  "homepage": "https://github.com/CapibarJS/explorer#readme",
+  "dependencies": {
+    "@codemirror/lang-javascript": "^6.1.8",
+    "@codemirror/lang-json": "^6.0.1",
+    "@codemirror/theme-one-dark": "^6.1.2",
+    "@mdi/font": "7.0.96",
+    "codemirror": "^6.0.1",
+    "roboto-fontface": "*",
+    "vue": "^3.2.0",
+    "vue-codemirror": "^6.1.1",
+    "vue-router": "^4.0.0",
+    "vuetify": "^3.0.0",
+    "webfontloader": "^1.0.0",
+    "@capibar/client": "0.0.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.0.3",
+    "vite": "^4.2.0",
+    "vite-plugin-vuetify": "^1.0.0",
+    "@types/node": "16.18.25",
+    "@typescript-eslint/eslint-plugin": "5.0.0",
+    "@typescript-eslint/parser": "5.0.0",
+    "eslint": "8.40.0",
+    "eslint-config-prettier": "8.6.0",
+    "eslint-plugin-import": "2.23.4",
+    "eslint-plugin-prettier": "4.2.1",
+    "prettier": "2.8.2",
+    "standard-version": "^9.5.0",
+    "typescript": "4.9.4"
+  }
+}
