@@ -1,6 +1,13 @@
 # Changelog CapibarJS/Client.
 
 
+### 0.0.4 (2023-06-01)
+
+
+### Chores
+
+* vite.config.js update ([deded79](https://github.com/CapibarJS/explorer/commit/deded798d6699ad1a940682bb323521eec217626))
+
 ### 0.0.3 (2023-05-31)
 
 
