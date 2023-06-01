@@ -8,4 +8,5 @@ export async function capibarApi(app) {
   });
   await application.build();
   app.provide('api', application);
+  app.config.globalProperties.$api = application;
 }
