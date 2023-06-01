@@ -1,46 +1,54 @@
 <template>
   <v-container>
-    <h1 class='text-h4 mt-6'>API</h1>
-    <div class='mt-10'></div>
-    <h2 class='text-h6 mb-4'>Namespaces</h2>
+    <h1 class="text-h4 mt-6">API</h1>
+    <div class="mt-10"></div>
+    <h2 class="text-h6 mb-4">Namespaces</h2>
     <v-expansion-panels multiple>
       <v-expansion-panel
-        v-for='[rootName, {meta: {description: rDesc, name: rName}}] in Object.entries(config)'
+        v-for="[
+          rootName,
+          {
+            meta: { description: rDesc, name: rName },
+          },
+        ] in Object.entries(config)"
       >
         <template #title>
-          <div class='text-subtitle-1'>
+          <div class="text-subtitle-1">
             {{ rName ?? rootName }}
           </div>
         </template>
 
         <template #text>
-          <div v-if='rDesc' class='mt-3 text-medium-emphasis'>
+          <div v-if="rDesc" class="mt-3 text-medium-emphasis">
             {{ rDesc }}
           </div>
 
-          <h3 class='text-subtitle-1 mt-4'>Methods</h3>
+          <h3 class="text-subtitle-1 mt-4">Methods</h3>
           <v-expansion-panels multiple>
             <v-expansion-panel
-              v-for='[methodName, methodOptions] in getMethods(rootName)'
-              :key='methodName'
-              elevation='1'
+              v-for="[methodName, methodOptions] in getMethods(rootName)"
+              :key="methodName"
+              elevation="1"
             >
               <template #title>
                 {{ methodOptions?.method }}
                 <span
-                  v-if='methodOptions.meta.name && methodOptions?.method !== methodOptions.meta.name'
-                  class='ml-4 text-disabled'
+                  v-if="
+                    methodOptions.meta.name &&
+                    methodOptions?.method !== methodOptions.meta.name
+                  "
+                  class="ml-4 text-disabled"
                 >
                   {{ methodOptions.meta.name }}
                 </span>
               </template>
               <template #text>
                 <Method
-                  :name='methodOptions.method'
-                  :namespace='rootName'
-                  :description='methodOptions.meta?.description'
-                  :params='methodOptions.params'
-                  :returns='methodOptions.returns'
+                  :name="methodOptions.method"
+                  :namespace="rootName"
+                  :description="methodOptions.meta?.description"
+                  :params="methodOptions.params"
+                  :returns="methodOptions.returns"
                 />
               </template>
             </v-expansion-panel>
@@ -52,16 +60,19 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { getCurrentInstance, inject } from 'vue';
 import Method from '@/components/Method.vue';
 
+console.log(getCurrentInstance().appContext.config.globalProperties.$api);
 const API = inject('api');
-const { api, config, structureMap } = API.rpc.http;
+const rpc = API?.rpc?.http ?? {};
 
-const getMethods = (namespace) => Array.from(structureMap.entries()).filter(
-  ([key]) => {
+const config = rpc?.config ?? {};
+const structureMap = rpc?.structureMap ?? {};
+
+const getMethods = (namespace) =>
+  Array.from(structureMap.entries()).filter(([key]) => {
     const _key = key.split('.').slice(0, -1).join('.');
     return namespace === _key;
-  },
-);
+  });
 </script>

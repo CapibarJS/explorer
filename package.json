@@ -37,7 +37,8 @@
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0",
     "webfontloader": "^1.0.0",
-    "@capibar/client": "0.0.4"
+    "@capibar/client": "0.0.4",
+    "prettier": "2.8.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",
@@ -50,7 +51,6 @@
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-import": "2.23.4",
     "eslint-plugin-prettier": "4.2.1",
-    "prettier": "2.8.2",
     "standard-version": "^9.5.0",
     "typescript": "4.9.4"
   }
