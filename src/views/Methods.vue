@@ -10,7 +10,7 @@
           {
             meta: { description: rDesc, name: rName },
           },
-        ] in Object.entries(config)"
+        ] in Object.entries(configs)"
       >
         <template #title>
           <div class="text-subtitle-1">
@@ -60,18 +60,13 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, inject } from 'vue';
 import Method from '@/components/Method.vue';
+import { useApi } from '@/composables/api';
 
-console.log(getCurrentInstance().appContext.config.globalProperties.$api);
-const API = inject('api');
-const rpc = API?.rpc?.http ?? {};
-
-const config = rpc?.config ?? {};
-const structureMap = rpc?.structureMap ?? {};
+const { methods, configs } = useApi();
 
 const getMethods = (namespace) =>
-  Array.from(structureMap.entries()).filter(([key]) => {
+  Array.from(methods.value.entries()).filter(([key]) => {
     const _key = key.split('.').slice(0, -1).join('.');
     return namespace === _key;
   });

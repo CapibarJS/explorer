@@ -47,10 +47,13 @@
 <script setup>
 import { useTheme } from 'vuetify';
 import { computed } from 'vue';
+import { useApi } from '@/composables/api';
 
 const theme = useTheme();
 const currentTheme = computed(() => theme.global.current.value.dark);
 const toggleTheme = () => {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
 };
+
+useApi().setup();
 </script>
