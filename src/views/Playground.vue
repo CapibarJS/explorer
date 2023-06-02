@@ -35,9 +35,10 @@ import { Codemirror } from 'vue-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { json } from '@codemirror/lang-json';
 import { oneDark } from '@codemirror/theme-one-dark';
-import { computed, inject, onMounted, ref, shallowRef } from 'vue';
+import { computed, onMounted, ref, shallowRef } from 'vue';
 import { useTheme } from 'vuetify';
 import { debounce, formatCodeJS } from '@/utils';
+import { useApi } from '@/composables/api';
 
 const isDarkTheme = computed(() => useTheme().global.current.value.dark);
 const theme = computed(() => (isDarkTheme ? oneDark : undefined));
@@ -56,9 +57,10 @@ return { rpc };
 const codeJS = ref(defaultCode);
 const codeJSON = ref(`{ }`);
 
-const API = inject('api');
-window.rpc = API?.clients;
+const { rpc } = useApi();
+window.rpc = rpc.value;
 document.rpc = window.rpc;
+
 const getExtensions = (lang) => {
   return [lang(), theme.value].filter((x) => x);
 };

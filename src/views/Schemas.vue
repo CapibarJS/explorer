@@ -59,17 +59,14 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
 import Schema from '@/components/Schema.vue';
+import { useApi } from '@/composables/api';
 
-const API = inject('api');
-const rpc = API?.rpc?.http ?? {};
-
-const schemas = rpc?.schemas ?? {};
+const { schemas } = useApi();
 
 const namespaces = Array.from(
   new Set(
-    Object.keys(schemas).map((x) => {
+    Object.keys(schemas.value).map((x) => {
       const [name, ...namespace] = x.split('.').reverse();
       return namespace.join('.') ?? '';
     }),
@@ -77,7 +74,7 @@ const namespaces = Array.from(
 ).filter((x) => !!x);
 
 const getSchemas = (namespace = null) =>
-  Object.entries(schemas).filter(([key]) => {
+  Object.entries(schemas.value).filter(([key]) => {
     if (namespace === null) return key.split('.').length === 1;
     const _key = key.split('.').slice(0, -1).join('.');
     return namespace === _key;
