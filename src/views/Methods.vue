@@ -3,7 +3,7 @@
     <h1 class="text-h4 mt-6">API</h1>
     <div class="mt-10"></div>
     <h2 class="text-h6 mb-4">Namespaces</h2>
-    <v-expansion-panels multiple>
+    <v-expansion-panels :multiple="true">
       <v-expansion-panel
         v-for="[
           rootName,
@@ -19,19 +19,21 @@
         </template>
 
         <template #text>
-          <div v-if="rDesc" class="mt-3 text-medium-emphasis">
+          <div v-if="rDesc" class="mt-3 mb-4 text-medium-emphasis">
             {{ rDesc }}
           </div>
 
-          <h3 class="text-subtitle-1 mt-4">Methods</h3>
-          <v-expansion-panels multiple>
+          <!--          <h3 class="text-subtitle-1 mt-4">Methods</h3>-->
+          <v-expansion-panels :multiple="true">
             <v-expansion-panel
               v-for="[methodName, methodOptions] in getMethods(rootName)"
               :key="methodName"
               elevation="1"
             >
               <template #title>
-                {{ methodOptions?.method }}
+                <span class="font-weight-bold text-subtitle-1">{{
+                  methodOptions?.method
+                }}</span>
                 <span
                   v-if="
                     methodOptions.meta.name &&

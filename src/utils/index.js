@@ -14,3 +14,5 @@ export const formatCodeJS = (code) =>
     parser: 'babel',
     plugins: [parserBabel],
   });
+
+export const toJson = (json) => JSON.stringify(json, null, 2);
