@@ -15,9 +15,20 @@
       :tab-size="2"
       :extensions="getExtensions(javascript)"
       @ready="handleReady"
-      @change="run('change', $event)"
     />
-    <div style="width: 0.75rem; height: 100%" />
+    <div
+      class="position-relative d-flex align-center"
+      style="width: 0.75rem; height: 100%; z-index: 2"
+    >
+      <div
+        class="position-absolute"
+        style="left: 50%; transform: translate(-50%, -50%)"
+      >
+        <v-btn icon width="60" height="60" elevation="10" @click="runScript">
+          <v-icon class="mdi mdi-play" size="35" />
+        </v-btn>
+      </div>
+    </div>
     <codemirror
       v-model="codeJSON"
       placeholder="Response..."
@@ -32,18 +43,24 @@
 
 <script setup>
 import { Codemirror } from 'vue-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
 import { json } from '@codemirror/lang-json';
+import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
-import { computed, onMounted, ref, shallowRef } from 'vue';
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  onUnmounted,
+  ref,
+  shallowRef,
+} from 'vue';
 import { useTheme } from 'vuetify';
-import { debounce, formatCodeJS } from '@/utils';
+import { debounce, formatCodeJS, toJson } from '@/utils';
 import { useApi } from '@/composables/api';
+import { useStorage } from '@vueuse/core';
 
 const isDarkTheme = computed(() => useTheme().global.current.value.dark);
 const theme = computed(() => (isDarkTheme ? oneDark : undefined));
-
-const toJson = (json) => JSON.stringify(json, null, 2);
 
 const defaultCode = formatCodeJS(`/* Enter Code ... */
 /* --- Example ---
@@ -54,13 +71,10 @@ const defaultCode = formatCodeJS(`/* Enter Code ... */
 return { rpc };
 `);
 
-const codeJS = ref(defaultCode);
+const codeJS = useStorage('code-js', defaultCode);
 const codeJSON = ref(`{ }`);
 
-const { rpc } = useApi();
-window.rpc = rpc.value;
-document.rpc = window.rpc;
-
+const { execAsyncScript } = useApi();
 const getExtensions = (lang) => {
   return [lang(), theme.value].filter((x) => x);
 };
@@ -70,26 +84,32 @@ const handleReady = (payload) => {
   view.value = payload.view;
 };
 
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-
-const formatCode = debounce((code) => {
+const formatCode = () => {
   try {
-    codeJS.value = formatCodeJS(code);
+    codeJS.value = formatCodeJS(codeJS.value);
   } catch (ex) {
     codeJSON.value = toJson(ex);
   }
-}, 2000);
+};
 
-const run = async (event, code) => {
-  formatCode(code);
+const runScript = async () => {
   try {
-    const script = `${code}`;
-    const func = new AsyncFunction(script);
-    const result = await func();
+    const result = await execAsyncScript(codeJS.value);
     codeJSON.value = toJson(result);
   } catch (ex) {
     codeJSON.value = toJson({ status: 'error', error: String(ex) });
   }
 };
-onMounted(() => run('mounted', codeJS.value));
+
+onBeforeMount(runScript);
+
+const formatAndRunScript = debounce(() => {
+  formatCode();
+  runScript();
+}, 2000);
+
+onMounted(() => {
+  document.addEventListener('keydown', formatAndRunScript);
+});
+onUnmounted(() => document.removeEventListener('keydown', formatAndRunScript));
 </script>
