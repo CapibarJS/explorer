@@ -29,6 +29,8 @@
     "@codemirror/lang-javascript": "^6.1.8",
     "@codemirror/lang-json": "^6.0.1",
     "@codemirror/theme-one-dark": "^6.1.2",
+    "@codemirror/state": "6.2.1",
+    "@codemirror/view": "6.12.0",
     "@mdi/font": "7.0.96",
     "codemirror": "^6.0.1",
     "roboto-fontface": "*",
@@ -38,7 +40,10 @@
     "vuetify": "^3.0.0",
     "webfontloader": "^1.0.0",
     "@capibar/client": "0.0.4",
-    "prettier": "2.8.2"
+    "prettier": "2.8.2",
+    "highlight.js": "11.8.0",
+    "@highlightjs/vue-plugin": "2.1.0",
+    "@vueuse/core": "10.1.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",

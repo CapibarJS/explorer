@@ -7,6 +7,8 @@ const schemas = ref({});
 const methods = ref(new Map());
 const configs = ref({});
 
+const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+
 export function useApi() {
   const setup = async () => {
     if (app.value) return;
@@ -26,7 +28,13 @@ export function useApi() {
       methods.value = records?.structureMap ?? methods.value;
       configs.value = records.config ?? configs.value;
     }
+    window.rpc = rpc.value;
   };
 
-  return { setup, rpc, schemas, methods, configs };
+  const execAsyncScript = async (script, payload = {}) => {
+    const func = new AsyncFunction('rpc', ...Object.keys(payload), script);
+    return func.apply(null, [rpc.value, ...Object.values(payload)]);
+  };
+
+  return { setup, execAsyncScript, rpc, schemas, methods, configs };
 }
