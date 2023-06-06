@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="text-h4 mt-6">Schemas</h1>
+    <h1 class="text-h4">Schemas</h1>
     <div class="mt-10"></div>
     <h2 class="text-h6 mb-4">Namespaces</h2>
     <v-expansion-panels multiple>

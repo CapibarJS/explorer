@@ -1,5 +1,6 @@
 import { CapibarModule } from '@capibar/client';
 import { ref } from 'vue';
+import { useMeta } from '@/composables/meta';
 
 const app = ref();
 const rpc = ref({});
@@ -7,15 +8,27 @@ const schemas = ref({});
 const methods = ref(new Map());
 const configs = ref({});
 
+const currentClient = ref();
+
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 
+const getUrl = (port, protocol = 'http', host = location.hostname) =>
+  `${protocol}://${host}:${port}`;
+
 export function useApi() {
+  const { meta } = useMeta();
   const setup = async () => {
     if (app.value) return;
+    currentClient.value = meta.value?.clients?.[0]?.name ?? 'http';
+    const clients = (meta.value?.clients ?? []).map(({ name, port }) => [
+      name,
+      getUrl(port, name),
+    ]);
     const application = new CapibarModule({
       clients: {
-        http: 'http://127.0.0.1:3001',
+        ...Object.fromEntries(clients),
       },
+      isExplorer: true,
     });
     await application.build();
 
@@ -36,5 +49,13 @@ export function useApi() {
     return func.apply(null, [rpc.value, ...Object.values(payload)]);
   };
 
-  return { setup, execAsyncScript, rpc, schemas, methods, configs };
+  return {
+    setup,
+    execAsyncScript,
+    rpc,
+    schemas,
+    methods,
+    configs,
+    currentClient,
+  };
 }

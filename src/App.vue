@@ -1,12 +1,15 @@
 <template>
-  <v-layout>
-    <v-navigation-drawer :rail="collapsed" location="right" :absolute="true">
-      <v-list-item
-        prepend-avatar="@/assets/logo.png"
-        title="Capibar JS Example"
-        subtitle="Capibar JS"
-        :nav="true"
-      />
+  <v-app>
+    <v-navigation-drawer :rail="collapsed" location="right">
+      <v-list-item prepend-avatar="@/assets/logo.png" :nav="true">
+        <v-list-item-title>
+          {{ meta.name }}
+        </v-list-item-title>
+        <v-list-item-subtitle>
+          Capibar JS
+          <code class="ml-1">v{{ meta.coreVersion }}</code>
+        </v-list-item-subtitle>
+      </v-list-item>
 
       <v-divider></v-divider>
 
@@ -45,16 +48,37 @@
       </template>
     </v-navigation-drawer>
     <v-main>
+      <v-container class="d-flex align-center pa-0">
+        <v-col class="text-h6">
+          <span class="text-disabled">Explorer </span>
+          <span class="text-h6">{{ meta.name }}</span>
+          <v-chip class="ml-3" size="small">
+            <code>{{ meta.version }}</code>
+          </v-chip>
+        </v-col>
+        <v-spacer />
+        <v-col cols="4" md="2">
+          <v-select
+            label="Client"
+            v-model="currentClient"
+            :items="clients"
+            variant="outlined"
+            density="compact"
+            hide-details
+          ></v-select>
+        </v-col>
+      </v-container>
       <router-view />
     </v-main>
-  </v-layout>
+  </v-app>
 </template>
 
 <script setup>
 import { useTheme } from 'vuetify';
 import { computed, onBeforeMount } from 'vue';
-import { useApi } from '@/composables/api';
 import { useStorage } from '@vueuse/core';
+import { useMeta } from '@/composables/meta';
+import { useApi } from '@/composables/api';
 
 const theme = useTheme();
 const themeStorage = useStorage('theme', 'dark');
@@ -68,7 +92,12 @@ onBeforeMount(() => {
   theme.global.name.value = themeStorage.value;
 });
 
+useMeta().setup();
 useApi().setup();
+
+const { meta } = useMeta();
+const clients = computed(() => meta.value?.clients?.map((x) => x.name));
+const { currentClient } = useApi();
 
 const collapsed = useStorage('sidebar-collapsed', false);
 </script>
