@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import SchemaFields from '@/components/SchemaFields.vue';
 import CodeBlock from '@/components/CodeBlock.vue';
+import { useApi } from '@/composables/api';
 
 const props = defineProps({
   name: String,
@@ -25,10 +26,11 @@ const methodSchemas = computed(() =>
   }),
 );
 
-const client = 'http';
+const client = useApi().currentClient;
 
 const code = computed(
-  () => `rpc.${client}.${path.value}(${hasRequest.value ? 'payload' : ''})`,
+  () =>
+    `rpc.${client.value}.${path.value}(${hasRequest.value ? 'payload' : ''})`,
 );
 </script>
 

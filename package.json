@@ -39,7 +39,7 @@
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0",
     "webfontloader": "^1.0.0",
-    "@capibar/client": "0.0.4",
+    "@capibar/client": "0.0.5",
     "prettier": "2.8.2",
     "highlight.js": "11.8.0",
     "@highlightjs/vue-plugin": "2.1.0",
