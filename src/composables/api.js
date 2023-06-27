@@ -19,8 +19,8 @@ export function useApi() {
   const { meta } = useMeta();
   const setup = async () => {
     if (app.value) return;
-    currentClient.value = meta.value?.clients?.[0]?.name ?? 'http';
-    const clients = (meta.value?.clients ?? []).map(({ name, port }) => [
+    currentClient.value = meta.value?.meta?.clients?.[0]?.name ?? 'http';
+    const clients = (meta.value?.meta?.clients ?? []).map(({ name, port }) => [
       name,
       getUrl(port, name),
     ]);

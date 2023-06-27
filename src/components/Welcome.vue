@@ -12,7 +12,7 @@
       <v-row class="d-flex align-center justify-center">
         <v-col cols="auto">
           <v-btn
-            href="/playground"
+            to="playground"
             min-width="164"
             rel="noopener noreferrer"
             variant="text"
@@ -53,7 +53,7 @@
       <v-row class="d-flex align-center justify-center">
         <v-col cols="auto">
           <v-btn
-            href="/"
+            to="/"
             min-width="164"
             rel="noopener noreferrer"
             variant="text"
@@ -65,7 +65,7 @@
 
         <v-col cols="auto">
           <v-btn
-            href="/schemas"
+            to="schemas"
             min-width="164"
             rel="noopener noreferrer"
             variant="text"

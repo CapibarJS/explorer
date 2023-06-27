@@ -1,10 +1,10 @@
 // Plugins
-import vue from '@vitejs/plugin-vue';
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
+import vue from "@vitejs/plugin-vue";
+import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 // Utilities
-import { defineConfig } from 'vite';
-import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from "vite";
+import { fileURLToPath, URL } from "node:url";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -25,9 +25,7 @@ export default defineConfig({
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
   },
   server: {
+    host: '127.0.0.1',
     port: 3000,
-  },
-  build: {
-    emptyOutDir: true,
   },
 });
