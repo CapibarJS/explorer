@@ -1,6 +1,20 @@
 <template>
   <v-container>
-    <h1 class="text-h4">API</h1>
+    <v-row>
+      <v-col>
+        <h1 class="text-h4">API</h1>
+      </v-col>
+      <v-col cols="4" md="2">
+        <v-select
+          label="Client"
+          v-model="currentClient"
+          :items="clients"
+          variant="outlined"
+          density="compact"
+          hide-details
+        ></v-select>
+      </v-col>
+    </v-row>
     <div class="mt-10"></div>
     <h2 class="text-h6 mb-4">Namespaces</h2>
     <v-expansion-panels :multiple="true">
@@ -64,6 +78,8 @@
 <script setup>
 import Method from '@/components/Method.vue';
 import { useApi } from '@/composables/api';
+import { useMeta } from '@/composables/meta';
+import { computed } from 'vue';
 
 const { methods, configs } = useApi();
 
@@ -72,4 +88,8 @@ const getMethods = (namespace) =>
     const _key = key.split('.').slice(0, -1).join('.');
     return namespace === _key;
   });
+
+const { meta } = useMeta();
+const clients = computed(() => meta.value?.meta?.clients?.map((x) => x.name));
+const { currentClient } = useApi();
 </script>

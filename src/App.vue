@@ -14,17 +14,17 @@
       <v-divider></v-divider>
 
       <v-list density="compact">
-        <v-list-item prepend-icon="mdi-home" title="Home" href="/home" />
-        <v-list-item prepend-icon="mdi-function" title="Methods" href="/" />
+        <v-list-item prepend-icon="mdi-home" title="Home" to="home" />
+        <v-list-item prepend-icon="mdi-function" title="Methods" to="/" />
         <v-list-item
           prepend-icon="mdi-application-braces"
           title="Schemas"
-          href="schemas"
+          to="schemas"
         />
         <v-list-item
           prepend-icon="mdi-script-text-play"
           title="Playground"
-          href="/playground"
+          to="playground"
         />
       </v-list>
 
@@ -56,17 +56,6 @@
             <code>{{ meta.version }}</code>
           </v-chip>
         </v-col>
-        <v-spacer />
-        <v-col cols="4" md="2">
-          <v-select
-            label="Client"
-            v-model="currentClient"
-            :items="clients"
-            variant="outlined"
-            density="compact"
-            hide-details
-          ></v-select>
-        </v-col>
       </v-container>
       <router-view />
     </v-main>
@@ -88,17 +77,12 @@ const toggleTheme = () => {
   themeStorage.value = theme.global.name.value;
 };
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  await useMeta().setup();
+  await useApi().setup();
   theme.global.name.value = themeStorage.value;
 });
-
-useMeta().setup();
-useApi().setup();
-
 const { meta } = useMeta();
-const clients = computed(() => meta.value?.clients?.map((x) => x.name));
-const { currentClient } = useApi();
-
 const collapsed = useStorage('sidebar-collapsed', false);
 </script>
 
