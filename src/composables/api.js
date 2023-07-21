@@ -13,7 +13,7 @@ const currentClient = ref();
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 
 const getUrl = (port, protocol = 'http', host = location.hostname) =>
-  `${protocol}://${host}:${port}`;
+  `${protocol}://${host}${port ? `:${port}` : ''}`;
 
 export function useApi() {
   const { meta } = useMeta();
